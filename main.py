@@ -1,50 +1,28 @@
+from cProfile import label
+from cgitb import text
+from imp import source_from_cache
+from turtle import color, pos, width
 from kivy.app import App
-from kivy.uix.widget import Widget
+from kivy.uix.button import Button
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.image import AsyncImage
 from kivy.uix.label import Label
-from kivy.properties import (NumericProperty, 
-            ReferenceListProperty,ObjectProperty)
-from kivy.vector import Vector
-from kivy.clock import Clock
-from random import randint
+from kivy.core.window import Window
 
+Window.clearcolor = (1,1,1,1)
+Window.size = (368, 570)
 
-class PongBall(Widget):
+class MainApp(App):
 
-    velocity_x = NumericProperty(0)
-    velocity_y = NumericProperty(0)
-
-    velocity = ReferenceListProperty(velocity_x, velocity_y)
-
-    def move(self):
-        self.pos = Vector(*self.velocity) + self.pos
-
-class PongGame(Widget):
-    ball = ObjectProperty(None)
-
-    def serve_ball(self):
-        self.ball.center = self.center
-        self.ball.velocity = Vector(4, 0).rotate(randint(0, 360))
-
-    def update(self, dt):
-        self.ball.move()
-
-        #bounce off top and bottom
-        if (self.ball.y < 0) or (self.ball.top > self.height):
-            self.ball.velocity_y *= -1
-        
-        #bounce off left and right
-        if (self.ball.x < 0) or (self.ball.right > self.width):
-            self.ball.velocity_x *= -1
-
-
-class PongApp(App):
-    
     def build(self):
-        game = PongGame()
-        game.serve_ball()
-        Clock.schedule_interval(game.update, 1.0/60.0)
-        return game
+        layout = BoxLayout(orientation='vertical', spacing="40sp", padding="80sp")
+        img = AsyncImage(source = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtmaNC8EyHSCbnBPf1m5Kol8SXGRFcXgv19hNabFsd&s")
+        btn4 = Button(text="Login", size_hint=(None, None), width="100sp", height="50sp", pos_hint={'center_x': .5,'center_y': 0.0})
+        layout.add_widget(img)
+        layout.add_widget(btn4)
 
 
-if __name__ == "__main__":
-    PongApp().run()
+        return layout
+
+    
+MainApp().run()
